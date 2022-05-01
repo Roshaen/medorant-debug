@@ -1,33 +1,36 @@
 import 'package:flutter/material.dart';
-import 'package:medorant/utils/themes.dart';
 
 class Counter extends StatelessWidget {
   var low;
   var mid;
   var high;
-  Counter(this.high, this.mid, this.low, {Key? key}) : super(key: key);
+  var safeCheck;
+  Counter(this.high, this.mid, this.low, this.safeCheck, {Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    high ??= '0';
-    mid ??= '0';
-    low ??= '0';
-
     return Container(
       height: 130,
       width: double.infinity,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: const Color.fromARGB(255, 240, 234, 251)),
+        borderRadius: BorderRadius.circular(10),
+        color: safeCheck
+            ? const Color.fromARGB(100, 223, 245, 232)
+            : const Color.fromARGB(100, 245, 223, 223),
+      ),
       child: Column(
         children: [
           const SizedBox(
             height: 15,
           ),
           Text(
-            'Alert',
+            safeCheck ? 'SAFE' : 'NOT SAFE',
             style: TextStyle(
-                color: AppTheme.lightTheme(context).primaryColor, fontSize: 18),
+                color: safeCheck
+                    ? const Color.fromARGB(100, 0, 206, 45)
+                    : const Color.fromARGB(100, 206, 0, 0),
+                fontSize: 22),
           ),
           const SizedBox(
             height: 25,

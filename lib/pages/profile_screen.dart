@@ -17,25 +17,17 @@ class ProfileScreen extends StatelessWidget {
             const SizedBox(
               height: 60,
             ),
-            ListTile(
-              leading: const CircleAvatar(
+            const ListTile(
+              leading: CircleAvatar(
                 backgroundImage: AssetImage('assets/images/img1.jpg'),
                 radius: 30,
               ),
-              title: const Text(
+              title: Text(
                 'Roshan Kumar',
                 style: TextStyle(
                     color: Color.fromARGB(255, 112, 111, 229), fontSize: 18),
               ),
-              subtitle: const Text('Roshan'),
-              trailing: RaisedButton(
-                onPressed: () {},
-                color: const Color.fromARGB(255, 112, 111, 229),
-                child: const Text(
-                  'Edit',
-                  style: TextStyle(fontSize: 18, color: Colors.white),
-                ),
-              ),
+              subtitle: Text('Roshan'),
             ),
             const SizedBox(
               height: 40,

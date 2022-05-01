@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:medorant/widgets/counterfeit.dart';
 import 'dart:convert';
 import 'package:medorant/widgets/drawer.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MedicineDetails extends StatefulWidget {
   MedicineDetails({Key? key}) : super(key: key);
@@ -21,6 +22,10 @@ class _MedicineDetailsState extends State<MedicineDetails> {
   var counterfeit = true;
   var problem = {};
   var altMed = [];
+  var mid = '';
+  var high = '';
+  var low = '';
+  var prep = '';
 
   getDetails(String id, String name) async {
     var finalName = name.trim();
@@ -38,6 +43,24 @@ class _MedicineDetailsState extends State<MedicineDetails> {
     sideEffects = finalData['side_effects'];
     counterfeit = finalData['counterFeit'];
     problem = finalData['severity'];
+    altMed = finalData['alternative_medicines'];
+    prep = finalData['prescription'];
+
+    if (problem['mediumSeverity']['count'].toString() == "null") {
+      mid = "0";
+    } else {
+      mid = problem['mediumSeverity']['count'].toString();
+    }
+    if (problem['highSeverity']['count'].toString() == "null") {
+      high = "0";
+    } else {
+      high = problem['highSeverity']['count'].toString();
+    }
+    if (problem['lowSeverity']['count'].toString() == "null") {
+      low = "0";
+    } else {
+      low = problem['lowSeverity']['count'].toString();
+    }
 
     setState(() {});
   }
@@ -62,158 +85,222 @@ class _MedicineDetailsState extends State<MedicineDetails> {
                 child: SizedBox(
                     height: 200, child: Image.asset('assets/images/med.png')),
               ),
-              const SizedBox(height: 35),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.circle,
-                      color: counterfeit ? Colors.green : Colors.red),
-                  Text(
-                    counterfeit
-                        ? 'It\'s safe for you!'
-                        : 'It\'s not safe for you!',
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
+              const SizedBox(height: 25),
+              Text(
+                medName.toUpperCase(),
+                style:
+                    const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
               ),
-              const SizedBox(height: 20),
-              // Counter(),
+              const SizedBox(height: 25),
               Column(children: [
                 counterfeit
                     ? Container()
                     : Counter(
-                        problem['highSeverity']['count'].toString(),
-                        problem['highSeverity']['count'].toString(),
-                        problem['lowSeverity']['count'].toString(),
+                        high,
+                        mid,
+                        low,
+                        counterfeit,
                       ),
               ]),
               const SizedBox(height: 30),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              //price
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
-                    'Medicine Name',
-                    style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w500,
-                        color: Color.fromARGB(255, 112, 111, 229)),
+                    'PRICE',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
-                  const SizedBox(height: 10),
-                  Text(
-                    medName,
-                    textAlign: TextAlign.start,
-                    style: const TextStyle(fontSize: 18),
-                  ),
+                  Text(mrp, style: const TextStyle(fontSize: 18)),
                 ],
               ),
+
+              // next
               const SizedBox(height: 35),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Price',
-                    style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w500,
-                        color: Color.fromARGB(255, 112, 111, 229)),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    mrp,
-                    style: const TextStyle(fontSize: 18),
-                  ),
-                ],
+              //USE
+              const Text(
+                'HOW TO USE :',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-              const SizedBox(height: 35),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Use',
-                    style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w500,
-                        color: Color.fromARGB(255, 112, 111, 229)),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    use,
-                    style: const TextStyle(fontSize: 18),
-                  ),
-                ],
+              const SizedBox(
+                height: 20,
               ),
-              const SizedBox(height: 35),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'How to use',
-                    style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w500,
-                        color: Color.fromARGB(255, 112, 111, 229)),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Text(
+              Container(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text(
                     howToUse,
-                    textAlign: TextAlign.start,
-                    style: const TextStyle(fontSize: 18),
+                    style: const TextStyle(fontSize: 16),
                   ),
+                ),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: const Color.fromARGB(31, 128, 128, 128)),
+              ),
+
+              //END USE
+              const SizedBox(height: 35),
+              const Text(
+                'USES :',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+
+              Container(
+                width: double.infinity,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text(
+                    use,
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                ),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: const Color.fromARGB(31, 128, 128, 128)),
+              ),
+
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
                   const SizedBox(
-                    height: 40,
+                    height: 20,
                   ),
                   const Text(
-                    'Side Effects',
-                    style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w500,
-                        color: Color.fromARGB(255, 112, 111, 229)),
+                    'SIDE EFFECTS :',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(
                     height: 20,
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: sideEffects
-                        .map((e) => Text(
-                              e,
-                              textAlign: TextAlign.start,
-                              style: const TextStyle(fontSize: 18),
-                            ))
-                        .toList(),
+                  Container(
+                    width: double.infinity,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: sideEffects
+                            .map((e) => Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 4),
+                                  child: Text(
+                                    '◉  $e',
+                                    textAlign: TextAlign.start,
+                                    style: const TextStyle(fontSize: 16),
+                                  ),
+                                ))
+                            .toList(),
+                      ),
+                    ),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: const Color.fromARGB(31, 128, 128, 128)),
                   ),
                   const SizedBox(
                     height: 30,
                   ),
                   const Text(
-                    'Stores',
-                    style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w500,
-                        color: Color.fromARGB(255, 112, 111, 229)),
+                    'STORES :',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    width: double.infinity,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: store
+                            .map((e) => Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 4),
+                                  child: InkWell(
+                                    child: Text(
+                                      "◉  ${e['store']}",
+                                      textAlign: TextAlign.start,
+                                      style: const TextStyle(fontSize: 16),
+                                    ),
+                                    onTap: () {
+                                      launch(e['link']);
+                                    },
+                                  ),
+                                ))
+                            .toList(),
+                      ),
+                    ),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: const Color.fromARGB(31, 128, 128, 128)),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  const Text(
+                    'ALTERNATIVE :',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    width: double.infinity,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: altMed
+                            .map((e) => Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 4),
+                                  child: Text(
+                                    "◉  ${e}",
+                                    textAlign: TextAlign.start,
+                                    style: const TextStyle(fontSize: 16),
+                                  ),
+                                ))
+                            .toList(),
+                      ),
+                    ),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: const Color.fromARGB(31, 128, 128, 128)),
+                  ),
+                  const SizedBox(height: 35),
+                  const Text(
+                    'PRESCRIPTION :',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    width: double.infinity,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Text(
+                        prep.toUpperCase(),
+                        style: const TextStyle(fontSize: 16),
+                      ),
+                    ),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: const Color.fromARGB(31, 128, 128, 128)),
                   ),
                   const SizedBox(
                     height: 30,
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: store
-                        .map(
-                          (e) => InkWell(
-                            child: Text(
-                              '${e['store']}',
-                              textAlign: TextAlign.start,
-                              style: const TextStyle(fontSize: 18),
-                            ),
-                            onTap: () {},
-                          ),
-                        )
-                        .toList(),
+                  Container(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                        onPressed: () {
+                          launch('https://medorant-reward-system.vercel.app/');
+                        },
+                        child: const Text('Get your rewards')),
                   ),
                   const SizedBox(
                     height: 60,

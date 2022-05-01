@@ -50,6 +50,7 @@ class _LoginEditState extends State<LoginEdit> {
 
     return MaterialApp(
       home: Scaffold(
+        backgroundColor: Colors.white,
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 15),
@@ -67,11 +68,6 @@ class _LoginEditState extends State<LoginEdit> {
                 const SizedBox(
                   height: 30,
                 ),
-                // CircleAvatar(
-                //   // backgroundImage: NetworkImage(),
-
-                //   radius: 50,
-                // ),
                 const SizedBox(
                   height: 50,
                 ),
@@ -80,37 +76,9 @@ class _LoginEditState extends State<LoginEdit> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        // TextFormField(
-                        //   decoration: const InputDecoration(
-                        //     labelText: "Name",
-                        //     border: OutlineInputBorder(),
-                        //   ),
-                        //   onChanged: (value) => setState(() => name = value),
-                        //   validator: (value) {
-                        //     if (value!.isEmpty) {
-                        //       return "Username can't be Empty";
-                        //     } else {
-                        //       return null;
-                        //     }
-                        //   },
-                        // ),
                         const SizedBox(
                           height: 20,
                         ),
-                        // TextFormField(
-                        //   decoration: const InputDecoration(
-                        //     labelText: "Email",
-                        //     border: OutlineInputBorder(),
-                        //   ),
-                        //   onChanged: (value) => setState(() => email = value),
-                        //   validator: (value) {
-                        //     if (value!.isEmpty) {
-                        //       return "Email can't be Empty";
-                        //     } else {
-                        //       return null;
-                        //     }
-                        //   },
-                        // ),
                         const SizedBox(
                           height: 20,
                         ),
@@ -190,6 +158,10 @@ class _LoginEditState extends State<LoginEdit> {
                           width: double.infinity,
                           height: 40,
                         ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        Image.asset('assets/images/personal.png')
                       ],
                     ),
                   ),

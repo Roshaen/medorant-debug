@@ -54,7 +54,6 @@ class _ScanState extends State<Scan> {
   @override
   Widget build(BuildContext context) {
     final id = ModalRoute.of(context)!.settings.arguments as String;
-    print(id);
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
@@ -71,10 +70,16 @@ class _ScanState extends State<Scan> {
                   if (textScanning) const CircularProgressIndicator(),
                   if (!textScanning && imageFile == null)
                     Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.grey[300]!,
+                      ),
                       width: 300,
                       height: 300,
-                      color: Colors.grey[300]!,
                     ),
+                  const SizedBox(
+                    height: 30,
+                  ),
                   if (imageFile != null) Image.file(File(imageFile!.path)),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -114,6 +119,9 @@ class _ScanState extends State<Scan> {
                           ),
                         ),
                       ),
+                      const SizedBox(
+                        width: 40,
+                      ),
                       Container(
                         margin: const EdgeInsets.symmetric(horizontal: 5),
                         padding: const EdgeInsets.only(top: 10),
@@ -149,10 +157,10 @@ class _ScanState extends State<Scan> {
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        height: 20,
-                      ),
                     ],
+                  ),
+                  const SizedBox(
+                    height: 40,
                   ),
                   ElevatedButton(
                       onPressed: () {

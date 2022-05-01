@@ -33,7 +33,6 @@ class _HomeState extends State<Home> {
       name = details['name'];
       email = details['email'];
       img1 = details['image'];
-      // print(details['img']);
       setState(() {});
     }
 
